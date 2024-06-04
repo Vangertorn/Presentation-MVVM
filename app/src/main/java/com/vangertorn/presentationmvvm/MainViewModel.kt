@@ -11,9 +11,15 @@ class MainViewModel: ViewModel() {
 
     fun getState(): StateFlow<MainStateModel> = state
 
-    fun onButtonClick() {
+    fun onButtonIncreaseClick() {
         state.update { stateModel ->
             MainStateModel(stateModel.value + 1)
+        }
+    }
+
+    fun onButtonDecreaseClick() {
+        state.update { stateModel ->
+            MainStateModel(stateModel.value -1)
         }
     }
 }
