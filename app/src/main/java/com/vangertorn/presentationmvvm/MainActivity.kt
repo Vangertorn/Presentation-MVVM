@@ -31,7 +31,6 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val viewModel = viewModel<MainViewModel>()
-
             val screenState: MainStateModel by viewModel.getState().collectAsStateWithLifecycle()
             PresentationMVVMTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
