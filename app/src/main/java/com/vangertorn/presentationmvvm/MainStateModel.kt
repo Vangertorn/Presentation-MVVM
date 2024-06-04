@@ -1,6 +1,7 @@
 package com.vangertorn.presentationmvvm
 
-@JvmInline
-value class MainStateModel(
-    val value: Int
+data class MainStateModel(
+    val firstValue: Int,
+    val secondValue: Int,
 )
+

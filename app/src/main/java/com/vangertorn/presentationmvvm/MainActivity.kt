@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,22 +24,49 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.vangertorn.presentationmvvm.alternative.AlternativeMainStateModel
+import com.vangertorn.presentationmvvm.alternative.AlternativeMainViewModel
 import com.vangertorn.presentationmvvm.ui.theme.PresentationMVVMTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+//        setContent {
+//            val viewModel = viewModel<AlternativeMainViewModel>()
+//            val firstState: AlternativeMainStateModel by viewModel.getFirstState().collectAsStateWithLifecycle()
+//            val secondState: AlternativeMainStateModel by viewModel.getSecondState().collectAsStateWithLifecycle()
+//            val resultState: AlternativeMainStateModel by viewModel.getResultState().collectAsStateWithLifecycle()
+//            PresentationMVVMTheme {
+//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+//                    Greeting(
+//                        firstCount = firstState.value,
+//                        secondCount = secondState.value,
+//                        result = resultState.value,
+//                        modifier = Modifier.padding(innerPadding),
+//                        firstButtonIncreaseClick = viewModel::onFirstButtonIncreaseClick,
+//                        firstButtonDecreaseClick = viewModel::onFirstButtonDecreaseClick,
+//                        secondButtonIncreaseClick = viewModel::onSecondButtonIncreaseClick,
+//                        secondButtonDecreaseClick = viewModel::onSecondButtonDecreaseClick,
+//                    )
+//                }
+//            }
+//        }
         setContent {
             val viewModel = viewModel<MainViewModel>()
             val screenState: MainStateModel by viewModel.getState().collectAsStateWithLifecycle()
             PresentationMVVMTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        count = screenState.value,
+                        firstCount = screenState.firstValue,
+                        secondCount = screenState.secondValue,
+                        result = screenState.firstValue + screenState.secondValue,
                         modifier = Modifier.padding(innerPadding),
-                        buttonIncreaseClick = viewModel::onButtonIncreaseClick,
-                        buttonDecreaseClick = viewModel::onButtonDecreaseClick,
+                        firstButtonIncreaseClick = viewModel::onFirstButtonIncreaseClick,
+                        firstButtonDecreaseClick = viewModel::onFirstButtonDecreaseClick,
+                        secondButtonIncreaseClick = viewModel::onSecondButtonIncreaseClick,
+                        secondButtonDecreaseClick = viewModel::onSecondButtonDecreaseClick,
                     )
                 }
             }
@@ -48,30 +76,65 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(
-    count: Int,
+    firstCount: Int,
+    secondCount: Int,
+    result: Int,
     modifier: Modifier,
-    buttonIncreaseClick: () -> Unit,
-    buttonDecreaseClick: () -> Unit,
+    firstButtonIncreaseClick: () -> Unit,
+    firstButtonDecreaseClick: () -> Unit,
+    secondButtonIncreaseClick: () -> Unit,
+    secondButtonDecreaseClick: () -> Unit,
 ) {
-    Row(
+    Column(
         modifier = modifier
             .fillMaxSize()
             .background(color = Color.LightGray),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Button(onClick = buttonIncreaseClick, modifier = modifier.padding(start = 32.dp, end = 8.dp)) {
-            Text(text = "Increase")
+        Row(
+            modifier = modifier,
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(onClick = firstButtonIncreaseClick, modifier = modifier.padding(start = 32.dp, end = 8.dp)) {
+                Text(text = "Increase")
+            }
+            Spacer(modifier = Modifier.width(16.dp))
+            Button(onClick = firstButtonDecreaseClick, modifier = modifier.padding(start = 32.dp, end = 8.dp)) {
+                Text(text = "Decrease")
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                modifier = modifier.padding(end = 32.dp, start = 8.dp),
+                text = firstCount.toString(),
+                fontSize = 30.sp
+            )
         }
-        Spacer(modifier = Modifier.width(16.dp))
-        Button(onClick = buttonDecreaseClick, modifier = modifier.padding(start = 32.dp, end = 8.dp)) {
-            Text(text = "Decrease")
+        Spacer(modifier = Modifier.width(32.dp))
+        Row(
+            modifier = modifier,
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(onClick = secondButtonIncreaseClick, modifier = modifier.padding(start = 32.dp, end = 8.dp)) {
+                Text(text = "Increase")
+            }
+            Spacer(modifier = Modifier.width(16.dp))
+            Button(onClick = secondButtonDecreaseClick, modifier = modifier.padding(start = 32.dp, end = 8.dp)) {
+                Text(text = "Decrease")
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                modifier = modifier.padding(end = 32.dp, start = 8.dp),
+                text = secondCount.toString(),
+                fontSize = 30.sp
+            )
         }
-        Spacer(modifier = Modifier.weight(1f))
         Text(
-            modifier = modifier.padding(end = 32.dp, start = 8.dp),
-            text = count.toString(),
-            fontSize = 30.sp
+            modifier = modifier.padding(end = 32.dp, start = 32.dp),
+            text = result.toString(),
+            fontSize = 40.sp
         )
     }
 }

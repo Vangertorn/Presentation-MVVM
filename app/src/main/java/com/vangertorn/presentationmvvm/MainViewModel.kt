@@ -5,21 +5,35 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-class MainViewModel: ViewModel() {
+class MainViewModel : ViewModel() {
 
-    private val state = MutableStateFlow(MainStateModel(0))
+    private val state = MutableStateFlow(
+        MainStateModel(firstValue = 0, secondValue = 0)
+    )
 
     fun getState(): StateFlow<MainStateModel> = state
 
-    fun onButtonIncreaseClick() {
+    fun onFirstButtonIncreaseClick() {
         state.update { stateModel ->
-            MainStateModel(stateModel.value + 1)
+            stateModel.copy(firstValue = stateModel.firstValue + 1)
         }
     }
 
-    fun onButtonDecreaseClick() {
+    fun onFirstButtonDecreaseClick() {
         state.update { stateModel ->
-            MainStateModel(stateModel.value -1)
+            stateModel.copy(firstValue = stateModel.firstValue - 1)
+        }
+    }
+
+    fun onSecondButtonIncreaseClick() {
+        state.update { stateModel ->
+            stateModel.copy(secondValue = stateModel.secondValue + 1)
+        }
+    }
+
+    fun onSecondButtonDecreaseClick() {
+        state.update { stateModel ->
+            stateModel.copy(secondValue = stateModel.secondValue - 1)
         }
     }
 }
