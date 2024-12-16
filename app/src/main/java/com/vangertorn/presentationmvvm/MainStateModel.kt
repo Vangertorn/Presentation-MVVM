@@ -5,5 +5,11 @@ data class MainStateModel(
     val firstValueLoading: Boolean,
     val secondValue: Int,
     val secondValueLoading: Boolean,
+    val isWinningProcess: Boolean,
+    val winningResult: WinningResultType?,
 )
 
+enum class WinningResultType{
+    ERROR,
+    SUCCESS
+}

@@ -30,6 +30,8 @@ fun GreetingAlternative(
     firstButtonDecreaseClick: () -> Unit,
     secondButtonIncreaseClick: () -> Unit,
     secondButtonDecreaseClick: () -> Unit,
+    winningProcessClick: () -> Unit,
+    resetButton: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -50,6 +52,8 @@ fun GreetingAlternative(
                     when (firstState) {
                         is AlternativeMainCoeffUiState.Content -> firstState.increaseButtonColor
                         AlternativeMainCoeffUiState.Loading -> Color.DarkGray
+                        AlternativeMainCoeffUiState.Error -> Color.Blue
+                        AlternativeMainCoeffUiState.Winner -> Color.DarkGray
                     }
                 ),
                 modifier = modifier.padding(start = 32.dp, end = 8.dp),
@@ -63,6 +67,8 @@ fun GreetingAlternative(
                     containerColor = when (firstState) {
                         is AlternativeMainCoeffUiState.Content -> firstState.decreaseButtonColor
                         AlternativeMainCoeffUiState.Loading -> Color.DarkGray
+                        AlternativeMainCoeffUiState.Error -> Color.Blue
+                        AlternativeMainCoeffUiState.Winner -> Color.DarkGray
                     }
                 ),
                 modifier = modifier.padding(start = 32.dp, end = 8.dp),
@@ -85,6 +91,19 @@ fun GreetingAlternative(
                         color = MaterialTheme.colorScheme.secondary,
                         trackColor = MaterialTheme.colorScheme.surfaceVariant
                     )
+                AlternativeMainCoeffUiState.Error -> Text(
+                    modifier = modifier.padding(end = 32.dp, start = 8.dp),
+                    text = "0",
+                    fontSize = 30.sp,
+                    color = Color.Black,
+                )
+                AlternativeMainCoeffUiState.Winner -> CircularProgressIndicator(
+                    modifier = Modifier
+                        .width(72.dp)
+                        .padding(end = 32.dp, start = 8.dp),
+                    color = MaterialTheme.colorScheme.secondary,
+                    trackColor = MaterialTheme.colorScheme.surfaceVariant
+                )
             }
 
         }
@@ -100,6 +119,8 @@ fun GreetingAlternative(
                     containerColor = when (secondState) {
                         is AlternativeMainCoeffUiState.Content -> secondState.increaseButtonColor
                         AlternativeMainCoeffUiState.Loading -> Color.DarkGray
+                        AlternativeMainCoeffUiState.Error -> Color.Blue
+                        AlternativeMainCoeffUiState.Winner -> Color.DarkGray
                     }
                 ),
                 modifier = modifier.padding(start = 32.dp, end = 8.dp),
@@ -113,6 +134,8 @@ fun GreetingAlternative(
                     containerColor = when (secondState) {
                         is AlternativeMainCoeffUiState.Content -> secondState.decreaseButtonColor
                         AlternativeMainCoeffUiState.Loading -> Color.DarkGray
+                        AlternativeMainCoeffUiState.Error -> Color.Blue
+                        AlternativeMainCoeffUiState.Winner -> Color.DarkGray
                     }
                 ),
                 modifier = modifier.padding(start = 32.dp, end = 8.dp),
@@ -135,14 +158,42 @@ fun GreetingAlternative(
                         color = MaterialTheme.colorScheme.secondary,
                         trackColor = MaterialTheme.colorScheme.surfaceVariant
                     )
+                AlternativeMainCoeffUiState.Error -> Text(
+                    modifier = modifier.padding(end = 32.dp, start = 8.dp),
+                    text = "0",
+                    fontSize = 30.sp,
+                    color = Color.Black,
+                )
+                AlternativeMainCoeffUiState.Winner -> CircularProgressIndicator(
+                    modifier = Modifier
+                        .width(72.dp)
+                        .padding(end = 32.dp, start = 8.dp),
+                    color = MaterialTheme.colorScheme.secondary,
+                    trackColor = MaterialTheme.colorScheme.surfaceVariant
+                )
             }
         }
         when (resultState) {
-            is AlternativeMainResultUiState.Content -> Text(
-                modifier = modifier.padding(end = 32.dp, start = 32.dp),
-                text = resultState.value,
-                fontSize = 40.sp
-            )
+            is AlternativeMainResultUiState.Content ->
+                Row(
+                    modifier = modifier,
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Button(
+                        onClick = winningProcessClick,
+                        enabled = resultState.buttonEnable,
+                        modifier = modifier.padding(start = 32.dp, end = 8.dp),
+                    ) {
+                        Text(text = "Get winning")
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        modifier = modifier.padding(end = 32.dp, start = 8.dp),
+                        text = resultState.value,
+                        fontSize = 40.sp,
+                    )
+                }
             AlternativeMainResultUiState.Loading ->
                 CircularProgressIndicator(
                     modifier = Modifier
@@ -151,6 +202,34 @@ fun GreetingAlternative(
                     color = MaterialTheme.colorScheme.secondary,
                     trackColor = MaterialTheme.colorScheme.surfaceVariant
                 )
+            AlternativeMainResultUiState.Error -> {
+                Row(
+                    modifier = modifier,
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Button(
+                        onClick = resetButton,
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
+                        modifier = modifier.padding(start = 32.dp, end = 8.dp),
+                    ) {
+                        Text(text = "Reset last Date")
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        modifier = modifier.padding(end = 32.dp, start = 8.dp),
+                        text = "0",
+                        fontSize = 40.sp,
+                    )
+                }
+            }
+            AlternativeMainResultUiState.Winner -> {
+                Text(
+                    modifier = modifier.padding(end = 32.dp, start = 8.dp),
+                    text = "You are winner!!!",
+                    fontSize = 40.sp,
+                )
+            }
         }
 
     }

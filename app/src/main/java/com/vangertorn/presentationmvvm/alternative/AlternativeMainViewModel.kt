@@ -20,6 +20,9 @@ class AlternativeMainViewModel : ViewModel() {
         AlternativeMainCoeffUiState.Loading
     )
 
+    private var currentFirstState: AlternativeMainCoeffUiState? = null
+    private var currentSecondState: AlternativeMainCoeffUiState? = null
+
     init {
         launchFirstCoeff()
         launchSecondCoeff()
@@ -31,17 +34,56 @@ class AlternativeMainViewModel : ViewModel() {
         firstState,
         secondState,
     ) { firstState, secondState ->
-        when{
+        when {
             firstState is AlternativeMainCoeffUiState.Loading -> AlternativeMainResultUiState.Loading
             secondState is AlternativeMainCoeffUiState.Loading -> AlternativeMainResultUiState.Loading
+            firstState is AlternativeMainCoeffUiState.Winner -> {
+                AlternativeMainResultUiState.Winner
+            }
+            secondState is AlternativeMainCoeffUiState.Winner -> {
+                AlternativeMainResultUiState.Winner
+            }
+            firstState is AlternativeMainCoeffUiState.Error -> {
+                AlternativeMainResultUiState.Error
+            }
+            secondState is AlternativeMainCoeffUiState.Error -> {
+                AlternativeMainResultUiState.Error
+            }
             else -> {
                 firstState as AlternativeMainCoeffUiState.Content
                 secondState as AlternativeMainCoeffUiState.Content
+                val firstValue = firstState.value.toInt()
+                val secondValue = secondState.value.toInt()
                 AlternativeMainResultUiState.Content(
-                    (firstState.value.toInt() + secondState.value.toInt()).toString()
+                    value = (firstValue + secondValue).toString(), buttonEnable = firstValue + secondValue == 10
                 )
             }
         }
+    }
+
+    fun onWinningProcessClick() {
+        val randomInt = (0..10).random()
+        viewModelScope.launch {
+            currentFirstState = firstState.value
+            currentSecondState = secondState.value
+            firstState.value = AlternativeMainCoeffUiState.Loading
+            secondState.value = AlternativeMainCoeffUiState.Loading
+            delay(8000)
+            if (randomInt >= 5) {
+                firstState.value = AlternativeMainCoeffUiState.Winner
+                secondState.value = AlternativeMainCoeffUiState.Winner
+                launchFirstCoeff()
+                launchSecondCoeff()
+            } else {
+                firstState.value = AlternativeMainCoeffUiState.Error
+                secondState.value = AlternativeMainCoeffUiState.Error
+            }
+        }
+    }
+
+    fun onRestoreValuesClick() {
+        firstState.value = currentFirstState ?: return
+        secondState.value = currentSecondState ?: return
     }
 
     fun onFirstButtonIncreaseClick() {
@@ -52,8 +94,8 @@ class AlternativeMainViewModel : ViewModel() {
             AlternativeMainCoeffUiState.Content(
                 value = updatedValue.toString(),
                 increaseButtonColor = updatedValue.getIncreaseButtonColor(),
-                decreaseButtonColor =updatedValue.getDecreaseButtonColor(),
-                valueColor = updatedValue.getValueColor()
+                decreaseButtonColor = updatedValue.getDecreaseButtonColor(),
+                valueColor = updatedValue.getValueColor(),
             )
         }
     }
@@ -66,8 +108,8 @@ class AlternativeMainViewModel : ViewModel() {
             AlternativeMainCoeffUiState.Content(
                 value = updatedValue.toString(),
                 increaseButtonColor = updatedValue.getIncreaseButtonColor(),
-                decreaseButtonColor =updatedValue.getDecreaseButtonColor(),
-                valueColor = updatedValue.getValueColor()
+                decreaseButtonColor = updatedValue.getDecreaseButtonColor(),
+                valueColor = updatedValue.getValueColor(),
             )
         }
     }
@@ -80,8 +122,8 @@ class AlternativeMainViewModel : ViewModel() {
             AlternativeMainCoeffUiState.Content(
                 value = updatedValue.toString(),
                 increaseButtonColor = updatedValue.getIncreaseButtonColor(),
-                decreaseButtonColor =updatedValue.getDecreaseButtonColor(),
-                valueColor = updatedValue.getValueColor()
+                decreaseButtonColor = updatedValue.getDecreaseButtonColor(),
+                valueColor = updatedValue.getValueColor(),
             )
         }
     }
@@ -94,8 +136,8 @@ class AlternativeMainViewModel : ViewModel() {
             AlternativeMainCoeffUiState.Content(
                 value = updatedValue.toString(),
                 increaseButtonColor = updatedValue.getIncreaseButtonColor(),
-                decreaseButtonColor =updatedValue.getDecreaseButtonColor(),
-                valueColor = updatedValue.getValueColor()
+                decreaseButtonColor = updatedValue.getDecreaseButtonColor(),
+                valueColor = updatedValue.getValueColor(),
             )
         }
     }
@@ -107,8 +149,8 @@ class AlternativeMainViewModel : ViewModel() {
             firstState.value = AlternativeMainCoeffUiState.Content(
                 value = resultFromNet.toString(),
                 increaseButtonColor = resultFromNet.getIncreaseButtonColor(),
-                decreaseButtonColor =resultFromNet.getDecreaseButtonColor(),
-                valueColor = resultFromNet.getValueColor()
+                decreaseButtonColor = resultFromNet.getDecreaseButtonColor(),
+                valueColor = resultFromNet.getValueColor(),
             )
         }
     }
@@ -120,8 +162,8 @@ class AlternativeMainViewModel : ViewModel() {
             secondState.value = AlternativeMainCoeffUiState.Content(
                 value = resultFromNet.toString(),
                 increaseButtonColor = resultFromNet.getIncreaseButtonColor(),
-                decreaseButtonColor =resultFromNet.getDecreaseButtonColor(),
-                valueColor = resultFromNet.getValueColor()
+                decreaseButtonColor = resultFromNet.getDecreaseButtonColor(),
+                valueColor = resultFromNet.getValueColor(),
             )
         }
     }

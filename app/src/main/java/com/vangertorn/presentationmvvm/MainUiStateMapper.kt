@@ -3,9 +3,11 @@ package com.vangertorn.presentationmvvm
 import androidx.compose.ui.graphics.Color
 
 fun MainStateModel.toMainUiStateMapper(): MainUiState {
-    return when{
-        firstValueLoading && secondValueLoading -> MainUiState.Loading.BothCoeffLoading
-        secondValueLoading-> MainUiState.Loading.SecondCoeffLoading(
+    return when {
+        firstValueLoading && secondValueLoading || isWinningProcess -> MainUiState.Loading.BothCoeffLoading(
+            isWinningTextVisible = winningResult == WinningResultType.SUCCESS
+        )
+        secondValueLoading -> MainUiState.Loading.SecondCoeffLoading(
             firstValue = firstValue.toString(),
             firstValueColor = firstValue.getValueColor(),
             firstIncreaseButtonColor = firstValue.getIncreaseButtonColor(),
@@ -14,9 +16,10 @@ fun MainStateModel.toMainUiStateMapper(): MainUiState {
         firstValueLoading -> MainUiState.Loading.FirstCoeffLoading(
             secondValue = secondValue.toString(),
             secondValueColor = secondValue.getValueColor(),
-            secondIncreaseButtonColor =secondValue.getIncreaseButtonColor(),
+            secondIncreaseButtonColor = secondValue.getIncreaseButtonColor(),
             secondDecreaseButtonColor = secondValue.getDecreaseButtonColor(),
         )
+        winningResult == WinningResultType.ERROR -> MainUiState.Error
         else -> MainUiState.Content(
             firstValue = firstValue.toString(),
             firstValueColor = firstValue.getValueColor(),
@@ -24,13 +27,12 @@ fun MainStateModel.toMainUiStateMapper(): MainUiState {
             firstDecreaseButtonColor = firstValue.getDecreaseButtonColor(),
             secondValue = secondValue.toString(),
             secondValueColor = secondValue.getValueColor(),
-            secondIncreaseButtonColor =secondValue.getIncreaseButtonColor(),
+            secondIncreaseButtonColor = secondValue.getIncreaseButtonColor(),
             secondDecreaseButtonColor = secondValue.getDecreaseButtonColor(),
-            resultValue = (firstValue + secondValue).toString()
+            resultValue = (firstValue + secondValue).toString(),
+            resultButtonEnable = firstValue + secondValue == 10
         )
     }
-
-
 }
 
 private fun Int.getValueColor(): Color = when (this) {

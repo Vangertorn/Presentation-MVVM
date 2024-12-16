@@ -14,6 +14,7 @@ sealed interface MainUiState {
         val secondIncreaseButtonColor: Color,
         val secondDecreaseButtonColor: Color,
         val resultValue: String,
+        val resultButtonEnable: Boolean,
     ) : MainUiState
 
     sealed interface Loading : MainUiState {
@@ -31,7 +32,11 @@ sealed interface MainUiState {
             val firstDecreaseButtonColor: Color,
         ) : Loading
 
-        object BothCoeffLoading : Loading
+        data class BothCoeffLoading(
+            val isWinningTextVisible: Boolean
+        ) : Loading
     }
+
+    object Error : MainUiState
 }
 

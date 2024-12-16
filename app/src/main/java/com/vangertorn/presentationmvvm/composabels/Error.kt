@@ -20,13 +20,13 @@ import androidx.compose.ui.unit.sp
 import com.vangertorn.presentationmvvm.MainUiState
 
 @Composable
-fun MainUiState.Content.GreetingContent(
+fun MainUiState.Error.GreetingError(
     modifier: Modifier,
     firstButtonIncreaseClick: () -> Unit,
     firstButtonDecreaseClick: () -> Unit,
     secondButtonIncreaseClick: () -> Unit,
     secondButtonDecreaseClick: () -> Unit,
-    winningProcessClick: () -> Unit,
+    resetButton: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -42,7 +42,7 @@ fun MainUiState.Content.GreetingContent(
         ) {
             Button(
                 onClick = firstButtonIncreaseClick,
-                colors = ButtonDefaults.buttonColors(containerColor = firstIncreaseButtonColor),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
                 modifier = modifier.padding(start = 32.dp, end = 8.dp),
             ) {
                 Text(text = "Increase")
@@ -50,7 +50,7 @@ fun MainUiState.Content.GreetingContent(
             Spacer(modifier = Modifier.width(16.dp))
             Button(
                 onClick = firstButtonDecreaseClick,
-                colors = ButtonDefaults.buttonColors(containerColor = firstDecreaseButtonColor),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
                 modifier = modifier.padding(start = 32.dp, end = 8.dp),
             ) {
                 Text(text = "Decrease")
@@ -58,9 +58,9 @@ fun MainUiState.Content.GreetingContent(
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 modifier = modifier.padding(end = 32.dp, start = 8.dp),
-                text = firstValue,
+                text = "0",
                 fontSize = 30.sp,
-                color = firstValueColor,
+                color = Color.Black,
             )
         }
         Spacer(modifier = Modifier.width(32.dp))
@@ -71,7 +71,7 @@ fun MainUiState.Content.GreetingContent(
         ) {
             Button(
                 onClick = secondButtonIncreaseClick,
-                colors = ButtonDefaults.buttonColors(containerColor = secondIncreaseButtonColor),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
                 modifier = modifier.padding(start = 32.dp, end = 8.dp),
             ) {
                 Text(text = "Increase")
@@ -79,7 +79,7 @@ fun MainUiState.Content.GreetingContent(
             Spacer(modifier = Modifier.width(16.dp))
             Button(
                 onClick = secondButtonDecreaseClick,
-                colors = ButtonDefaults.buttonColors(containerColor = secondDecreaseButtonColor),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
                 modifier = modifier.padding(start = 32.dp, end = 8.dp),
             ) {
                 Text(text = "Decrease")
@@ -87,9 +87,9 @@ fun MainUiState.Content.GreetingContent(
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 modifier = modifier.padding(end = 32.dp, start = 8.dp),
-                text = secondValue,
+                text = "0",
                 fontSize = 30.sp,
-                color = secondValueColor,
+                color = Color.Black,
             )
         }
         Row(
@@ -98,16 +98,16 @@ fun MainUiState.Content.GreetingContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(
-                onClick = winningProcessClick,
-                enabled = resultButtonEnable,
+                onClick = resetButton,
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
                 modifier = modifier.padding(start = 32.dp, end = 8.dp),
             ) {
-                Text(text = "Get winning")
+                Text(text = "Reset last Date")
             }
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 modifier = modifier.padding(end = 32.dp, start = 8.dp),
-                text = resultValue,
+                text = "0",
                 fontSize = 40.sp,
             )
         }

@@ -18,9 +18,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.vangertorn.presentationmvvm.MainUiState
 
 @Composable
-fun BothCoeffLoading(
+fun MainUiState.Loading.BothCoeffLoading.BothCoeffLoading(
     modifier: Modifier,
 ) {
     Column(
@@ -87,11 +89,33 @@ fun BothCoeffLoading(
                 trackColor = MaterialTheme.colorScheme.surfaceVariant
             )
         }
-        CircularProgressIndicator(
-            modifier = Modifier.width(72.dp)
-                .padding(end = 32.dp, start = 8.dp),
-            color = MaterialTheme.colorScheme.secondary,
-            trackColor = MaterialTheme.colorScheme.surfaceVariant
-        )
+        Row(
+            modifier = modifier,
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            if(isWinningTextVisible){
+                Text(
+                    modifier = modifier.padding(end = 32.dp, start = 8.dp),
+                    text = "You are winner!!!",
+                    fontSize = 40.sp,
+                )
+            }else{
+                Button(
+                    onClick = {},
+                    enabled = false,
+                    modifier = modifier.padding(start = 32.dp, end = 8.dp),
+                ) {
+                    Text(text = "Get winning")
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                CircularProgressIndicator(
+                    modifier = Modifier.width(72.dp)
+                        .padding(end = 32.dp, start = 8.dp),
+                    color = MaterialTheme.colorScheme.secondary,
+                    trackColor = MaterialTheme.colorScheme.surfaceVariant
+                )
+            }
+        }
     }
 }

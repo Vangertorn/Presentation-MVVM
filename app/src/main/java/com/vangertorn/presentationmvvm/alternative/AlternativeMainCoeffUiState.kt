@@ -10,8 +10,9 @@ sealed interface AlternativeMainCoeffUiState {
         val decreaseButtonColor: Color,
     ) : AlternativeMainCoeffUiState
 
+    object Error: AlternativeMainCoeffUiState
+
+    object Winner: AlternativeMainCoeffUiState
+
     object Loading : AlternativeMainCoeffUiState
 }
-
-
-

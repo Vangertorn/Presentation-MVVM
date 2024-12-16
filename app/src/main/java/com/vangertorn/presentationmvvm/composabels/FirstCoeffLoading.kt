@@ -91,11 +91,25 @@ fun MainUiState.Loading.FirstCoeffLoading.GreetingFirstCoeffLoading(
                 color = secondValueColor,
             )
         }
-        CircularProgressIndicator(
-            modifier = Modifier.width(72.dp)
-                .padding(end = 32.dp, start = 8.dp),
-            color = MaterialTheme.colorScheme.secondary,
-            trackColor = MaterialTheme.colorScheme.surfaceVariant
-        )
+        Row(
+            modifier = modifier,
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(
+                onClick = {},
+                enabled = false,
+                modifier = modifier.padding(start = 32.dp, end = 8.dp),
+            ) {
+                Text(text = "Get winning")
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            CircularProgressIndicator(
+                modifier = Modifier.width(72.dp)
+                    .padding(end = 32.dp, start = 8.dp),
+                color = MaterialTheme.colorScheme.secondary,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant
+            )
+        }
     }
 }
